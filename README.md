@@ -1,5 +1,7 @@
 # drifttrace
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 **Alert on incidents, not on threshold crossings.** `drifttrace` detects metric
 anomalies with a seasonal baseline and a robust z-score, then scores itself
 against labelled incidents — precision, recall, detection rate, and false alarms
@@ -14,6 +16,15 @@ baseline       P 1.000  R 0.017  F1 0.033   detected 36/108  false alarms 0
 That contrast is the point. The baseline has perfect precision and misses
 two-thirds of the incidents, because it only reacts to points that are far from
 the global mean: it catches spikes and almost nothing else.
+
+## Workflow
+
+```mermaid
+flowchart LR
+    A["1. Generate Labelled Series<br/>(gen.py: 20 series x 2,880 pts)"] --> B["2. Detect via Seasonal MAD & 3-Sigma<br/>(Java Detector.java)"]
+    B --> C["3. Score Point & Incident Recall<br/>(drifttrace eval)"]
+    C --> D["4. Render Interactive Timelines<br/>(TypeScript -> reports/timeline.html)"]
+```
 
 ## How the detector works
 
